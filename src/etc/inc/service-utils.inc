@@ -87,7 +87,7 @@ function start_service($name, $after_sync = false) {
 			if (isset($service['name']) && (strtolower($service['name']) == strtolower($name))) {
 				/* Avoid starting twice if this is called just after a
 				 * package sync which starts the service itself. */
-				if ($after_sync) {
+				if ($after_sync && isset($service['starts_on_sync'])) {
 					break;
 				}
 				if ($service['rcfile']) {
@@ -419,7 +419,7 @@ function get_services() {
 
 function find_service_by_name($name) {
 	$services = get_services();
-
+	
 	foreach ($services as $service) {
 		if (isset($service["name"]) && ($service["name"] == $name)) {
 			return $service;
